@@ -56,3 +56,90 @@ $db = getDB();
     $db->close();
     return ['success' => true, 'message' => 'Registered', 'user_id' => $userId];
 }
+
+function loginUser($username, $password) {
+    $username = trim($username);
+
+    if ($username === '' || $password === '') {
+        return ['success' => false, 'message' => 'Username and password are required'];
+    }
+
+    $db = getDB();
+
+    // 1. Look up the user by username
+    $stmt = $db->prepare("SELECT id, username, password_hash FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $user = $stmt->get_result()->fetch_assoc();
+
+    // 2. Check the password (same message for both cases on purpose)
+    if (!$user || !password_verify($password, $user['password_hash'])) {
+        $db->close();
+        return ['success' => false, 'message' => 'Invalid username or password'];
+    }
+
+    // 3. Make a random session token (64 hex characters)
+    $token = bin2hex(random_bytes(32));
+
+    // 4. Save the session, expiring 1 hour from now
+    $stmt = $db->prepare("INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, NOW() + INTERVAL 1 HOUR)");
+    $stmt->bind_param("si", $token, $user['id']);
+    $stmt->execute();
+    $db->close();
+
+    // 5. Send the token back
+    return [
+        'success'  => true,
+        'message'  => 'Login successful',
+        'token'    => $token,
+        'user_id'  => $user['id'],
+        'username' => $user['username']
+    ];
+}
+
+function validateSession($token) {
+    if ($token === '' || $token === null) {
+        return ['success' => false, 'message' => 'No session token'];
+    }
+
+    $db = getDB();
+
+    // Find the session, but only if it hasn't expired yet
+    $stmt = $db->prepare(
+        "SELECT s.user_id, u.username
+         FROM sessions s
+         JOIN users u ON u.id = s.user_id
+         WHERE s.token = ? AND s.expires_at > NOW()"
+    );
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    $db->close();
+
+    if (!$row) {
+        return ['success' => false, 'message' => 'Invalid or expired session'];
+    }
+
+    return [
+        'success'  => true,
+        'message'  => 'Session valid',
+        'user_id'  => $row['user_id'],
+        'username' => $row['username']
+    ];
+}
+
+function logoutUser($token) {
+    $db = getDB();
+
+    // Delete this session so the token can't be used again
+    $stmt = $db->prepare("DELETE FROM sessions WHERE token = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $deleted = $stmt->affected_rows;
+    $db->close();
+
+    if ($deleted === 0) {
+        return ['success' => false, 'message' => 'Session not found'];
+    }
+    return ['success' => true, 'message' => 'Logged out'];
+}
