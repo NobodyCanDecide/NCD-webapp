@@ -1,11 +1,20 @@
-#!/usr/bin/php
 <?php
-require_once('path.inc');
-require_once('get_host_info.inc');
-require_once('rabbitMQLib.inc');
-
-function Login($username, $password)
-{
-    
+if (!isset($_POST)){
+	$msg = "NO POST MESSAGE SET";
+	echo json_encode($msg);
+	exit(0);
 }
+
+$req = $_POST;
+$res = "unsupported request type";
+switch ($req["type"]) {
+	case "login":
+		$res = "Successfully logged in.";
+	break;
+	default:
+		$res = "Unsuccessful request.";
+	break;
+}
+echo json_encode($res);
+exit(0);
 ?>
