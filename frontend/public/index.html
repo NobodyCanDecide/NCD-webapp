@@ -2,7 +2,7 @@
 <script>
 function HandleLoginResponse(res) {
 	var text = JSON.parse(res);
-	document.getElementById("response").innerHTML = "response: " + text + "<p>";
+	document.getElementById("response").innerHTML = "response: " + text.message + "<p>";
 }
 
 function SendLoginRequest(username, password) {
@@ -33,7 +33,7 @@ function SendLoginRequest(username, password) {
 		<input id="password" type="password"></input> <br>
 
 		<button id="login" type="submit" onclick="validate()">LOG IN</button>
-
+		
 		<div id="response">
 			awaiting response
 		</div>

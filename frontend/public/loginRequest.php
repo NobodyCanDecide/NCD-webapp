@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 chdir(__DIR__ . '/../..');
 require_once('path.inc');
 require_once('get_host_info.inc');
