@@ -14,7 +14,7 @@ function SendLoginRequest(username, password) {
 			HandleLoginResponse(this.responseText);
 		}
 	}
-	req.send("type=login&username="+username+"&password="+password);
+	req.send("type=login&username="+encodeURIComponent(username)+"&password="+encodeURIComponent(password));
 }
 </script>
 <head>
