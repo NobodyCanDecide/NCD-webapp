@@ -7,14 +7,14 @@ function HandleLoginResponse(res) {
 
 function SendLoginRequest(username, password) {
 	var req = new XMLHttpRequest();
-	req.open("POST", "login.php", true);
+	req.open("POST", "loginRequest.php", true);
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	req.onreadystatechange = function () {
 		if ((this.readyState == 4) && (this.status == 200)) {
-			HandleLoginResponse(this.response);
+			HandleLoginResponse(this.responseText);
 		}
 	}
-	req.send("type=login&username=" + username + "&password=" + password);
+	req.send("type=login&username="+username+"&password="+password);
 }
 </script>
 <head>
@@ -44,8 +44,14 @@ function SendLoginRequest(username, password) {
 function validate() {
 	var username = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
-
-	SendLoginRequest(username, password);
+	
+	if (username == '' || password == '') {
+		document.getElementById("response").innerHTML = "please enter a username & password";	
+	}
+	else {
+		document.getElementById("response").innerHTML = "awaiting response";
+		SendLoginRequest(username, password);
+	}
 }
 </script>
 
