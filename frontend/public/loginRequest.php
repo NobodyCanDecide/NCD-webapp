@@ -6,21 +6,23 @@ require_once('rabbitMQLib.inc');
 
 
 $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
-if (isset($argv[1])) {
-	$msg = $argv[1];
-}
-else {
-	$msg = "test message";
-}
+
+
 
 $request = array();
 $request['type'] = 'login';
 $request['username'] = $_POST['username'];
 $request['password'] = $_POST['password'];
-$request['message'] = $msg;
 $response = $client->send_request($request);
 
-
+if (!empty($response['success'])) {
+        setcookie('session_token', $response['token'], [
+                'expires'  => time() + 3600,
+                'path'     => '/',
+                'httponly' => true,
+                'samesite' => 'Strict'
+        ]);
+}
 
 $payload = json_encode(['success' => !empty($response['success']), 'message' => $response['message'] ?? 'No response from server']);
 echo $payload;
