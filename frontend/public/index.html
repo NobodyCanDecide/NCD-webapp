@@ -1,0 +1,58 @@
+<html>
+<script>
+function HandleLoginResponse(res) {
+	var text = JSON.parse(res);
+	document.getElementById("response").innerHTML = "response: " + text.message + "<p>";
+}
+
+function SendLoginRequest(username, password) {
+	var req = new XMLHttpRequest();
+	req.open("POST", "loginRequest.php", true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function () {
+		if ((this.readyState == 4) && (this.status == 200)) {
+			HandleLoginResponse(this.responseText);
+		}
+	}
+	req.send("type=login&username="+username+"&password="+password);
+}
+</script>
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<h1>Login</h1>
+	<div id="login_box">
+	<!-- <form id="login_page" action="POST"> -->
+		<label>Username</label>
+		<input id="username" type="text"></input> <br>
+
+		<label>Password</label> 
+		<input id="password" type="password"></input> <br>
+
+		<button id="login" type="submit" onclick="validate()">LOG IN</button>
+		
+		<div id="response">
+			awaiting response
+		</div>
+	</div>
+	<!-- </form> -->
+</body>
+<script>
+function validate() {
+	var username = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+	
+	if (username == '' || password == '') {
+		document.getElementById("response").innerHTML = "please enter a username & password";	
+	}
+	else {
+		document.getElementById("response").innerHTML = "awaiting response";
+		SendLoginRequest(username, password);
+	}
+}
+</script>
+
+</html>
