@@ -8,12 +8,21 @@
 <html>
 	<body>
 		<h1 style"=text-align: center;">REGISTRATION</h1>
-		<form method="POST">
-			<label>Username</label> <input id="username" type="text"></input> <br>
-			<label>Email</label> <input id="email" type="text"></input> <br>
-			<label>Password</label> <input id="password"  type="password"></input> <br>
-			<label>Confirm Password</label> <input id="confirm" type="password"></input>
-			<input id="submit" type="submit" value="REGISTER"></input>
+		<form action="process()" method="POST">
+		<!-- form values for validation  -->
+			<label>Username</label>
+			<input id="username" type="text" required></input> <br>
+
+			<label>Email</label>
+			<input id="email" type="text" required></input> <br>
+			
+			<label>Password</label> 
+			<input id="password"  type="password" required></input> <br>
+			
+			<label>Confirm Password</label>
+			<input id="confirm" type="password" required></input> <br>
+			
+			<button id="submit" type="submit" value="REGISTER"></input>
 		</form>
 	<body>
 </html>
@@ -22,6 +31,7 @@
 /*
 * @PARAM username, email, password, confirm from form submission
 */
+function process() {
 if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm'])) {
 	$username = $_POST['username'];
 	$email = $_POST['email'];
@@ -53,11 +63,14 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 	// error checking and giving the user a message
 	if (!$error) {
 	// @TODO make rabbitMQ request to DB here
+
+	// @TODO send alert that RMQ request was successful
 	}
 	else {
 		echo '<script>';
 		echo '<alert("' . $err_msg . '")';
 		echo '</script>';
 	}	
+}
 }
 ?>
