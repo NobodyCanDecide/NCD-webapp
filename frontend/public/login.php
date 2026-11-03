@@ -10,6 +10,7 @@ $res = "unsupported request type";
 switch ($req["type"]) {
 	case "login":
 		// @TODO send db request here before calling login successful
+		
 		$res = "Successfully logged in.";
 	break;
 	default:
