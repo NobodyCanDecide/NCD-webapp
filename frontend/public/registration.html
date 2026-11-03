@@ -1,4 +1,21 @@
 <html>
+<script>
+function HandleRegistrationResponse(res) {
+	var text = JSON.parse(res);
+	document.getElementbyId("response").innerHTML = "response: " + text.message + "<p>";
+}
+
+function SendRegistrationRequest(username, email, password) {
+	var req = new XMLHttpRequest();
+	req.open("POST", "registration.php", true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function () {
+		if ((this.readyState == 4) && (this.status == 200)) {
+			HandleRegistrationResponse(this.responseText);
+		}
+	req.send("type=register&username="+username+"&email="+email+"&password="+password);
+}
+</script>
 <head>
          <meta charset="UTF-8">
          <title>Register</title>
@@ -19,7 +36,7 @@
                          <label>Confirm Password</label>
                          <input id="confirm" type="password" required></input> <br>
  
-                         <button id="register" type="submit">REGISTER</input> <br>
+                         <button id="register" type="submit" onclick="validate()">REGISTER</input> <br>
                          <a id="nav" href="index.html">Log In</a>
                  </div>
 <body>
@@ -28,6 +45,8 @@ function validate() {
          var username = document.getElementById("username").value;
          var password = document.getElementById("password").value;
 
+	// @TODO confirm & pass need to match before sending sign up request (use index.html for ref)
+}
 </script>
 </html>
 
