@@ -6,9 +6,9 @@ function HandleLoginResponse(res) {
 }
 
 function SendLoginRequest(username, password) {
-	var req = new XMLHTTPRequest();
+	var req = new XMLHttpRequest();
 	req.open("POST", "login.php", true);
-	req.setRequestHeaqder("Content-Type", "application/x-www-form-urlencoded");
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	req.onreadystatechange = function () {
 		if ((this.readyState == 4) && (this.status == 200)) {
 			HandleLoginResponse(this.response);
@@ -31,18 +31,13 @@ function SendLoginRequest(username, password) {
 
 		<label>Password</label> 
 		<input id="password" type="password"></input> <br>
-
-		<button id="login" type="submit" onclick="validate()">LOG IN</button>
+		
+		<button id="login" type="submit" onclick="SendLoginRequest("alice","password123")">LOG IN</button>
 
 		<div id="response">
 			awaiting response
 		</div>
-		<script>
-			SendLoginRequest("kehoed", "12345");
-		</script>
-
 	</div>
-	<!-- </form>	 -->
+	<!-- </form> -->
 </body>
-
 </html>

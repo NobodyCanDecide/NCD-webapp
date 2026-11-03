@@ -31,7 +31,6 @@
 /*
 * @PARAM username, email, password, confirm from form submission
 */
-function process() {
 if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['confirm'])) {
 	$username = $_POST['username'];
 	$email = $_POST['email'];
@@ -63,14 +62,14 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 	// error checking and giving the user a message
 	if (!$error) {
 	// @TODO make rabbitMQ request to DB here
-
+		$req = new DBRequests();
+		$req->register($username, $email, $password);
 	// @TODO send alert that RMQ request was successful
 	}
 	else {
-		echo '<script>';
+		echo '<script language="javascript">';
 		echo '<alert("' . $err_msg . '")';
 		echo '</script>';
 	}	
-}
 }
 ?>
