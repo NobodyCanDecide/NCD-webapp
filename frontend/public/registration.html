@@ -13,7 +13,7 @@ function SendRegistrationRequest(username, email, password) {
 		if ((this.readyState == 4) && (this.status == 200)) {
 			HandleRegistrationResponse(this.responseText);
 		}
-	req.send("type=register&username="+username+"&email="+email+"&password="+password);
+	req.send("type=register&username="+encodeURIComponent(username)+"&email="+encodeURIComponent(email)+"&password="+encodeURIComponent(password));
 }
 </script>
 <head>
