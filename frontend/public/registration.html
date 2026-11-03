@@ -1,0 +1,87 @@
+<html>
+<script>
+function HandleRegistrationResponse(res) {
+	var text = JSON.parse(res);
+	document.getElementById("response").innerHTML = "response: " + text.message + "<p>";
+}
+
+function SendRegistrationRequest(username, email, password) {
+	var req = new XMLHttpRequest();
+	req.open("POST", "registration.php", true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	req.onreadystatechange = function () {
+		if ((this.readyState == 4) && (this.status == 200)) {
+			HandleRegistrationResponse(this.responseText);
+		}
+	}
+	req.send("type=register&username="+encodeURIComponent(username)+"&email="+encodeURIComponent(email)+"&password="+encodeURIComponent(password));
+} 
+</script>
+<head>
+         <meta charset="UTF-8">
+         <title>Register</title>
+         <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+         <h1>REGISTRATION</h1>
+                 <div id="login_box">
+                         <label>Username</label>
+                         <input id="username" type="text" required></input> <br>
+ 
+                         <label>Email</label>
+                         <input id="email" type="text" required></input> <br>
+ 
+                         <label>Password</label>
+                         <input id="password"  type="password" required></input> <br>
+ 
+                         <label>Confirm Password</label>
+                         <input id="confirm" type="password" required></input> <br>
+ 
+                         <button id="register" type="submit" onclick="validate()">REGISTER</button> <br>
+                         <a id="nav" href="index.html">Log In</a> <br>
+
+			<div id="response">
+				awaiting response
+			</div>
+                 </div>
+<body>
+<script>
+function validate() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+	var confirm = document.getElementById("confirm").value;
+	var email = document.getElementById("email").value;
+	var response = document.getElementById("response");
+	var valid = true;
+
+	const validEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;	
+	
+	if (username === '') {
+		response.innerHTML = "Must enter a username.";
+		valid = false;
+	}
+
+	if (!validEmail.test(email)) {
+		response.innerHTML = "Please enter a valid email format.";
+		valid = false;
+	}
+
+	if (password.length < 8) {
+		valid = false;
+		response.innerHTML = "Please enter a password longer than 8 characters";
+	}
+
+	// @TODO confirm & pass need to match before sending sign up request (use index.html for ref)
+	if (password !== confirm || password === '' || confirm === '') {
+		response.innerHTML = "Passwords must match.";
+		valid = false;
+	}
+
+	if(valid) {
+		response.innerHTML = "awaiting response";
+		SendRegistrationRequest(username, email, password);
+	}
+}
+</script>
+</html>
+
