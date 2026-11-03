@@ -6,25 +6,28 @@
 */
 ?>
 <html>
-	<body>
-		<h1 style"=text-align: center;">REGISTRATION</h1>
-		<form action="process()" method="POST">
-		<!-- form values for validation  -->
-			<label>Username</label>
-			<input id="username" type="text" required></input> <br>
+<head>
+	 <meta charset="UTF-8">
+	 <title>Register</title>
+	 <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<h1>REGISTRATION</h1>
+	<label>Username</label>
+	<input id="username" type="text" required></input> <br>
 
-			<label>Email</label>
-			<input id="email" type="text" required></input> <br>
-			
-			<label>Password</label> 
-			<input id="password"  type="password" required></input> <br>
-			
-			<label>Confirm Password</label>
-			<input id="confirm" type="password" required></input> <br>
-			
-			<button id="submit" type="submit" value="REGISTER"></input>
-		</form>
-	<body>
+	<label>Email</label>
+	<input id="email" type="text" required></input> <br>
+	
+	<label>Password</label> 
+	<input id="password"  type="password" required></input> <br>
+	
+	<label>Confirm Password</label>
+	<input id="confirm" type="password" required></input> <br>
+	
+	<button id="register" type="submit">REGISTER</input> <br>
+	<a id="nav" href="index.html">Log In</a>
+<body>
 </html>
 
 <?php
