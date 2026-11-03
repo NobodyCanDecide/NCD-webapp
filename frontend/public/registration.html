@@ -2,7 +2,7 @@
 <script>
 function HandleRegistrationResponse(res) {
 	var text = JSON.parse(res);
-	document.getElementbyId("response").innerHTML = "response: " + text.message + "<p>";
+	document.getElementById("response").innerHTML = "response: " + text.message + "<p>";
 }
 
 function SendRegistrationRequest(username, email, password) {
@@ -13,8 +13,9 @@ function SendRegistrationRequest(username, email, password) {
 		if ((this.readyState == 4) && (this.status == 200)) {
 			HandleRegistrationResponse(this.responseText);
 		}
+	}
 	req.send("type=register&username="+encodeURIComponent(username)+"&email="+encodeURIComponent(email)+"&password="+encodeURIComponent(password));
-}
+} 
 </script>
 <head>
          <meta charset="UTF-8">
