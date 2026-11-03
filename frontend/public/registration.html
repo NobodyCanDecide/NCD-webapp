@@ -66,6 +66,11 @@ function validate() {
 		valid = false;
 	}
 
+	if (password.length < 8) {
+		valid = false;
+		response.innerHTML = "Please enter a password longer than 8 characters";
+	}
+
 	// @TODO confirm & pass need to match before sending sign up request (use index.html for ref)
 	if (password !== confirm || password === '' || confirm === '') {
 		response.innerHTML = "Passwords must match.";
