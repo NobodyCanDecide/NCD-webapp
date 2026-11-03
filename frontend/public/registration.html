@@ -23,7 +23,7 @@ function SendRegistrationRequest(username, email, password) {
 </head>
 <body>
          <h1>REGISTRATION</h1>
-                 <div id=login_box">
+                 <div id="login_box">
                          <label>Username</label>
                          <input id="username" type="text" required></input> <br>
  
@@ -36,16 +36,45 @@ function SendRegistrationRequest(username, email, password) {
                          <label>Confirm Password</label>
                          <input id="confirm" type="password" required></input> <br>
  
-                         <button id="register" type="submit" onclick="validate()">REGISTER</input> <br>
-                         <a id="nav" href="index.html">Log In</a>
+                         <button id="register" type="submit" onclick="validate()">REGISTER</button> <br>
+                         <a id="nav" href="index.html">Log In</a> <br>
+
+			<div id="response">
+				awaiting response
+			</div>
                  </div>
 <body>
 <script>
 function validate() {
-         var username = document.getElementById("username").value;
-         var password = document.getElementById("password").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+	var confirm = document.getElementById("confirm").value;
+	var email = document.getElementById("email").value;
+	var response = document.getElementById("response");
+	var valid = true;
+
+	const validEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;	
+	
+	if (username === '') {
+		response.innerHTML = "Must enter a username.";
+		valid = false;
+	}
+
+	if (!validEmail.test(email)) {
+		response.innerHTML = "Please enter a valid email format.";
+		valid = false;
+	}
 
 	// @TODO confirm & pass need to match before sending sign up request (use index.html for ref)
+	if (password !== confirm || password === '' || confirm === '') {
+		response.innerHTML = "Passwords must match.";
+		valid = false;
+	}
+
+	if(valid) {
+		response.innerHTML = "awaiting response";
+		SendRegistrationRequest(username, email, password);
+	}
 }
 </script>
 </html>
